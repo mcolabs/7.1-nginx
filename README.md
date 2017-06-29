@@ -8,18 +8,18 @@ A super small Docker image based on [Ubuntu Linux][ubuntu].
 
 ##  Build image:
 
-    docker build -t "registry-docker/nginx-php-7.1" . 
+    docker build -t "dockerphp/7.1-nginx" . 
 
 ## Run
 
-    docker run -d -p 80:80 registry-docker/nginx-php-7.1  -v /your/project:/app
+    docker run -d -p 80:80 dockerphp/7.1-nginx  -v /your/project:/app
 
 ## Run console mode
 
-    docker run -p 80:80 -a stdin -a stdout -i -t registry-docker/nginx-php-7.1  /bin/bash
+    docker run -p 80:80 -a stdin -a stdout -i -t dockerphp/7.1-nginx /bin/bash
 
 ##  License
 
 The code in this repository, unless otherwise noted, is MIT licensed. See the LICENSE file in this repository.
 
-[hub]: https://hub.docker.com/r/gliderlabs/alpine/
+[hub]: https://hub.docker.com/r/dockerphp/7.1-nginx/
