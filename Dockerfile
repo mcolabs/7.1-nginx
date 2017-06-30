@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:16.10
 
 ENV LANG="en_US.UTF-8" \
     LC_ALL="en_US.UTF-8" \
@@ -9,7 +9,7 @@ ENV LANG="en_US.UTF-8" \
     NODE_VERSION=6.11.0 \
     COMPOSER_ALLOW_SUPERUSER=1
 
-EXPOSE 80
+EXPOSE 80 443
 WORKDIR /app
 
 RUN apt-get update -q && \
@@ -54,6 +54,8 @@ RUN apt-get update -q && \
         ruby-full \
         wget && \
 
+    mkdir -p /var/log/supervisor && \
+
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
 
     cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && echo "Europe/Paris" > /etc/timezone && \
@@ -68,21 +70,11 @@ RUN apt-get update -q && \
 
     mkdir /run/php
 
-# Blackfire
-RUN wget -O - https://packagecloud.io/gpg.key | apt-key add - \
-    && echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list \
-    && apt-get update \
-    && apt-get install blackfire-agent \
-    && version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
-    && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version \
-    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp \
-    && mv /tmp/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
-    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.1/cli/conf.d/blackfire.ini \
-    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.1/fpm/conf.d/blackfire.ini
-
+COPY web/ web/
 COPY php.ini /etc/php/7.1/cli/conf.d/50-setting.ini
 COPY pool.conf /etc/php/7.1/fpm/pool.d/www.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY /ssl/ /etc/ssl/nginx/
 
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

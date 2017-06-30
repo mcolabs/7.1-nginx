@@ -1,18 +1,36 @@
-# dockerphp 7.1 nginx
+# PHP 7.1 with nginx
+> Sandbox for development
 
 [![CircleCI](https://img.shields.io/circleci/project/dockerphp/7.1-nginx/release.svg)](https://circleci.com/gh/dockerphp/7.1-nginx)
 [![Docker Stars](https://img.shields.io/docker/stars/dockerphp/7.1-nginx.svg)][hub]
 [![Docker Pulls](https://img.shields.io/docker/pulls/dockerphp/7.1-nginx.svg)][hub]
 
-A super small Docker image based on [Ubuntu Linux][ubuntu].
+Includes the following dependencies:
+- NodeJs
+- Sass
+- Yarn
+- Composer
 
-##  Build image:
+## Installation
+Pull the image from the docker index rather than downloading the git repo. This prevents you having to build the image on every docker host.
 
-    docker build -t "dockerphp/7.1-nginx" . 
+    docker pull dockerphp/7.1-nginx 
 
-## Run
+## Running
 
-    docker run -d -p 80:80 dockerphp/7.1-nginx  -v /your/project:/app
+To simply run the container:
+
+    $ docker run -d -p 80:80 dockerphp/7.1-nginx --name nginx
+
+## Volumes
+
+If you want to link to your web site directory on the docker host to the container run:
+
+    $ docker run -d -p 80:80 dockerphp/7.1-nginx  -v /your/project:/app
+
+## Enabling SSL
+
+    $ docker run -d -p 80:80 -p 443:443 -v your_crt_key_files:/etc/ssl/nginx/
 
 ## Run console mode
 
