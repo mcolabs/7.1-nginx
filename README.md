@@ -1,7 +1,7 @@
 # PHP 7.1 with nginx
 > Sandbox for development
 
-[![CircleCI](https://img.shields.io/circleci/project/dockerphp/7.1-nginx/release.svg)](https://circleci.com/gh/dockerphp/7.1-nginx)
+[![CircleCI](https://circleci.com/gh/php-docker/7.1-nginx/tree/master.svg?style=svg)](https://circleci.com/gh/php-docker/7.1-nginx/tree/master)
 [![Docker Stars](https://img.shields.io/docker/stars/dockerphp/7.1-nginx.svg)][hub]
 [![Docker Pulls](https://img.shields.io/docker/pulls/dockerphp/7.1-nginx.svg)][hub]
 
